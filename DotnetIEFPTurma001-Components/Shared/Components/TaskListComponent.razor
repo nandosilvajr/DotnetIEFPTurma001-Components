@@ -1,0 +1,49 @@
+﻿@using Models
+@using System.Collections.ObjectModel
+
+@Title
+<div style="min-height:200px; padding-left: 20px">
+
+    @if ( DataSource is not null && DataSource.Any())
+    {
+        foreach (var item in DataSource)
+        {
+            if (!item.Complete)
+            {
+                <div class="row">
+                    <div class="col">@item.Description</div>
+                    <div class="col">@item.EndDate.ToShortDateString()</div>
+                    <input class="col-1 h-100"
+                           type="checkbox" @onchange="() => { item.Complete = !item.Complete; item.CompleteAt = DateTime.Now;}" />
+                </div>
+            }
+        }
+    }
+</div>
+
+<div style="min-height:200px; padding-left: 20px">
+
+    @if (DataSource is not null && DataSource.Any())
+    {
+        foreach (var item in DataSource)
+        {
+            if (item.Complete)
+            {
+                <div class="row">
+                    <div class="col">@item.Description</div>
+                    <div class="col">@item.EndDate.ToShortDateString()</div>
+                    <input class="col-1 h-100"
+                           type="checkbox" @onchange="() => { item.Complete = !item.Complete; item.CompleteAt = DateTime.Now;}" />
+                </div>
+            }
+        }
+    }
+</div>
+@code {
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public ObservableCollection<ToDo> DataSource { get; set; } = new();
+
+}

@@ -1,0 +1,61 @@
+﻿
+@using Models
+@using System.Collections.ObjectModel
+
+<div class="fw-bold mb-2 fs-4">@Title</div>
+<div class="row">
+<div class="mb-3 col">
+    <label for="exampleFormControlInput1" class="form-label small">Task</label>
+    <input 
+        type="text" 
+        class="form-control" 
+        id="exampleFormControlInput1"
+        @bind-value=ToDo.Description
+        placeholder="Typing your task">
+</div>
+
+<div class="mb-3 col">
+    <label for="exampleFormControlInput2" class="form-label small">End date</label>
+    <input 
+        type="date" 
+        class="form-control" 
+        id="exampleFormControlInput2"
+        @bind-value=ToDo.EndDate
+        placeholder="End date">
+</div>
+</div>
+<button class="btn btn-primary" @onclick=AddTask>Add</button>
+
+<hr />
+
+<TaskListComponent Title="Tarefas" DataSource="ToDoList"></TaskListComponent>
+
+@if(ToDoList is not null && ToDoList.Any())
+{   
+    <TaskListComponent Title="Tarefas" DataSource="ToDoCompleteList = ToDoList.Where(x => x.Complete == true) as ObservableCollection<ToDo>"></TaskListComponent>
+}
+
+@code {
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    private ToDo? ToDo { get; set; } = new();
+
+    private ObservableCollection<ToDo> ToDoList { get; set; } = new();
+
+    private ObservableCollection<ToDo> ToDoCompleteList { get; set; } = new();
+ 
+    public void AddTask ()
+    {
+        var newToDo = new ToDo
+            {
+                Description = ToDo.Description,
+                EndDate = ToDo.EndDate,
+            };
+
+        ToDoList.Add(newToDo);
+        
+    }
+
+}
